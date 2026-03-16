@@ -2,28 +2,51 @@
 
 OpenMind is an intelligent assistant that controls your Windows computer through natural language. It can open applications, visit websites, control volume, take photos, and answer your questions using Mistral AI.
 
-## ✨ Features
+[🇫🇷 Version française disponible ci-dessous](#-fonctionnalités)
 
-| Category | Commands |
-|----------|----------|
-| 📱 **Applications** | `ouvre whatsapp`, `ouvre telegram`, `ouvre chrome`, `ouvre calculatrice`... |
-| 🌐 **Websites** | `ouvre youtube`, `ouvre google`, `ouvre spotify`, `ouvre facebook`... |
-| 🔍 **Search** | `cherche recette pizza`, `recherche météo Paris` |
-| 🧮 **Calculations** | `calcule 15 * 3`, `calcule 25 + 10` |
-| 🔊 **Volume** | `monte le volume`, `baisse le son`, `mute` |
-| 📷 **Webcam** | `photo`, `prends une photo` |
-| 🔆 **Brightness** | `monte la luminosité`, `luminosité 50%` |
-| 📧 **Email** | `mail`, `ouvre gmail` |
-| 🔋 **Battery** | `batterie`, `niveau batterie` |
-| 📋 **Clipboard** | `copie bonjour`, `colle` |
-| 📸 **Screenshot** | `capture`, `capture d'écran` |
-| 🔒 **Security** | `verrouille`, `lock` |
-| ⏻ **System** | `éteins`, `redémarre` |
-| 🌤️ **Weather** | `météo Paris`, `meteo Lyon` |
-| 📝 **Notes** | `note que je dois acheter du lait` |
-| 💬 **Questions** | `qui est Macron ?`, `quelle heure est-il ?` |
+---
 
-> 💡 **Note:** Commands are in French, but OpenMind understands various languages and spelling mistakes!
+## ✨ Features / Fonctionnalités
+
+### 🇬🇧 English
+- 📱 **Applications**: Open any app (`open whatsapp`, `open telegram`, `open chrome`, `open calculator`...)
+- 🌐 **Websites**: Open any website (`open youtube`, `open google`, `open spotify`, `open facebook`...)
+- 🔍 **Search**: Google search (`search pizza recipe`, `search Paris weather`)
+- 🧮 **Calculations**: Math (`calculate 15 * 3`, `calculate 25 + 10`)
+- 🔊 **Volume**: Control sound (`volume up`, `volume down`, `mute`)
+- 📷 **Webcam**: Take photos (`take photo`, `photo`)
+- 🔆 **Brightness**: Adjust screen brightness (`brightness up`, `brightness 50%`)
+- 📧 **Email**: Open your inbox (`open gmail`, `mail`)
+- 🔋 **Battery**: Check battery level (`battery`, `battery level`)
+- 📋 **Clipboard**: Copy and paste text (`copy hello`, `paste`)
+- 📸 **Screenshot**: Capture your screen (`screenshot`, `capture screen`)
+- 🔒 **Security**: Lock your computer (`lock`, `lock pc`)
+- ⏻ **System**: Shutdown or restart (`shutdown`, `restart`)
+- 🌤️ **Weather**: Get weather info (`weather Paris`, `weather Lyon`)
+- 📝 **Notes**: Save quick notes (`note that I need to buy milk`)
+- 💬 **Questions**: Ask Mistral AI (`who is Macron?`, `what time is it?`)
+
+> 💡 **Note:** You can use natural language, synonyms, and even make spelling mistakes!
+
+### 🇫🇷 Français
+- 📱 **Applications**: Ouvrir n'importe quelle app (`ouvre whatsapp`, `ouvre telegram`, `ouvre chrome`, `ouvre calculatrice`...)
+- 🌐 **Sites web**: Ouvrir n'importe quel site (`ouvre youtube`, `ouvre google`, `ouvre spotify`, `ouvre facebook`...)
+- 🔍 **Recherche**: Recherche Google (`cherche recette pizza`, `recherche météo Paris`)
+- 🧮 **Calculs**: Mathématiques (`calcule 15 * 3`, `calcule 25 + 10`)
+- 🔊 **Volume**: Contrôle du son (`monte le volume`, `baisse le son`, `mute`)
+- 📷 **Webcam**: Prendre des photos (`photo`, `prends une photo`)
+- 🔆 **Luminosité**: Ajuster la luminosité de l'écran (`monte la luminosité`, `luminosité 50%`)
+- 📧 **Mail**: Ouvrir ta boîte mail (`mail`, `ouvre gmail`)
+- 🔋 **Batterie**: Vérifier le niveau de batterie (`batterie`, `niveau batterie`)
+- 📋 **Presse-papiers**: Copier et coller du texte (`copie bonjour`, `colle`)
+- 📸 **Capture d'écran**: Capturer l'écran (`capture`, `capture d'écran`)
+- 🔒 **Sécurité**: Verrouiller l'ordinateur (`verrouille`, `lock`)
+- ⏻ **Système**: Éteindre ou redémarrer (`éteins`, `redémarre`)
+- 🌤️ **Météo**: Obtenir la météo (`météo Paris`, `meteo Lyon`)
+- 📝 **Notes**: Enregistrer des notes rapides (`note que je dois acheter du lait`)
+- 💬 **Questions**: Poser une question à Mistral (`qui est Macron ?`, `quelle heure est-il ?`)
+
+---
 
 ## 🚀 Installation
 
@@ -42,6 +65,8 @@ pip install -r requirements.txt
 python openmind_final.py
 ```
 
+---
+
 ## 🔑 Getting a Free Mistral AI API Key
 
 1. Go to **[console.mistral.ai](https://console.mistral.ai)**
@@ -56,63 +81,125 @@ python openmind_final.py
 
 > ⚠️ **Keep your key secret!** Never share it on GitHub.
 
+---
+
 ## 🎯 Command Examples
 
+### 🇬🇧 English Examples
 ```
-👤 > ouvre whatsapp
+👤 > open whatsapp
 🤖 ✅ WhatsApp opened
 
-👤 > ouvre youtube
+👤 > open youtube
 🤖 ✅ Website youtube opened
 
-👤 > cherche recette pizza
-🤖 ✅ Search: recette pizza
+👤 > search pizza recipe
+🤖 ✅ Search: pizza recipe
 
-👤 > calcule 15 * 3
+👤 > calculate 15 * 3
 🤖 🧮 = 45
 
-👤 > monte le volume
+👤 > volume up
 🤖 🔊 Volume up
 
-👤 > photo
+👤 > take photo
 🤖 ✅ Photo saved: openmind_photo_20250316_143022.jpg
 
-👤 > luminosité 50%
+👤 > brightness 50%
 🤖 🔆 Brightness set to 50%
 
-👤 > batterie
+👤 > battery
 🤖 🔋 Battery: 78% (2h15 remaining)
 
-👤 > copie bonjour
-🤖 ✅ Copied: bonjour...
+👤 > copy hello
+🤖 ✅ Copied: hello...
 
-👤 > colle
-🤖 📋 Clipboard: bonjour
+👤 > paste
+🤖 📋 Clipboard: hello
 
-👤 > capture
+👤 > screenshot
 🤖 ✅ Screenshot: capture_20250316_143156.png
 
-👤 > verrouille
+👤 > lock
 🤖 🔒 Computer locked
 
-👤 > météo Paris
+👤 > weather Paris
 🤖 🌤️ Weather Paris: +12°C ☀️ 15km/h
 
-👤 > note que je dois acheter du lait
+👤 > note that I need to buy milk
 🤖 📝 Note saved
 
-👤 > qui est Macron ?
+👤 > who is Macron?
 🤖 Emmanuel Macron is the president of France...
 
-👤 > qui t'a créé ?
+👤 > who created you?
 🤖 My creator is Coulibaly Aboubakar Sidiki...
 
-👤 > aide
+👤 > help
 🤖 (displays all commands)
 
 👤 > quit
 🤖 👋 Goodbye!
 ```
+
+### 🇫🇷 Exemples en Français
+```
+👤 > ouvre whatsapp
+🤖 ✅ WhatsApp ouvert
+
+👤 > ouvre youtube
+🤖 ✅ Site youtube ouvert
+
+👤 > cherche recette pizza
+🤖 ✅ Recherche: recette pizza
+
+👤 > calcule 15 * 3
+🤖 🧮 = 45
+
+👤 > monte le volume
+🤖 🔊 Volume monté
+
+👤 > photo
+🤖 ✅ Photo sauvegardée: openmind_photo_20250316_143022.jpg
+
+👤 > luminosité 50%
+🤖 🔆 Luminosité à 50%
+
+👤 > batterie
+🤖 🔋 Batterie: 78% (2h15 restant)
+
+👤 > copie bonjour
+🤖 ✅ Copié: bonjour...
+
+👤 > colle
+🤖 📋 Presse-papiers: bonjour
+
+👤 > capture
+🤖 ✅ Capture: capture_20250316_143156.png
+
+👤 > verrouille
+🤖 🔒 Ordinateur verrouillé
+
+👤 > météo Paris
+🤖 🌤️ Météo Paris: +12°C ☀️ 15km/h
+
+👤 > note que je dois acheter du lait
+🤖 📝 Note sauvegardée
+
+👤 > qui est Macron ?
+🤖 Emmanuel Macron est le président de la France...
+
+👤 > qui t'a créé ?
+🤖 Mon créateur est Coulibaly Aboubakar Sidiki...
+
+👤 > aide
+🤖 (affiche toutes les commandes)
+
+👤 > quit
+🤖 👋 Au revoir !
+```
+
+---
 
 ## 📦 Dependencies
 
@@ -126,6 +213,8 @@ python openmind_final.py
   - `pyperclip` : clipboard management
   - `mistralai` : AI integration
   - `pywin32` : CD drive control (optional)
+
+---
 
 ## 📁 Project Structure
 
@@ -144,9 +233,13 @@ OpenMind/
     └── whatsapp_contact.png
 ```
 
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
 
 ## 👨‍💻 Creator
 
@@ -157,10 +250,14 @@ Passionate amateur programmer from Côte d'Ivoire
 - Project : [OpenMind](https://github.com/sidiki579/OpenMind)
 - Email : coulibalysidiki046@gmail.com
 
+---
+
 ## ⭐ Acknowledgments
 
 - [Mistral AI](https://mistral.ai) for their free API
 - All OpenMind users and contributors!
+
+---
 
 ## 📢 Contributing
 
