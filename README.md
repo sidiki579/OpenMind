@@ -1,172 +1,174 @@
-# 🧠 OpenMind - Votre assistant personnel intelligent
+# 🧠 OpenMind - Your Intelligent Personal Assistant
 
-OpenMind est un assistant qui contrôle votre ordinateur en langage naturel. Il peut ouvrir des applications, des sites web, contrôler le volume, prendre des photos, et répondre à vos questions grâce à l'IA Mistral.
+OpenMind is an intelligent assistant that controls your Windows computer through natural language. It can open applications, visit websites, control volume, take photos, and answer your questions using Mistral AI.
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-| Catégorie | Commandes |
-|-----------|-----------|
+| Category | Commands |
+|----------|----------|
 | 📱 **Applications** | `ouvre whatsapp`, `ouvre telegram`, `ouvre chrome`, `ouvre calculatrice`... |
-| 🌐 **Sites web** | `ouvre youtube`, `ouvre google`, `ouvre spotify`, `ouvre facebook`... |
-| 🔍 **Recherche** | `cherche recette pizza`, `recherche météo Paris` |
-| 🧮 **Calculs** | `calcule 15 * 3`, `calcule 25 + 10` |
+| 🌐 **Websites** | `ouvre youtube`, `ouvre google`, `ouvre spotify`, `ouvre facebook`... |
+| 🔍 **Search** | `cherche recette pizza`, `recherche météo Paris` |
+| 🧮 **Calculations** | `calcule 15 * 3`, `calcule 25 + 10` |
 | 🔊 **Volume** | `monte le volume`, `baisse le son`, `mute` |
 | 📷 **Webcam** | `photo`, `prends une photo` |
-| 🔆 **Luminosité** | `monte la luminosité`, `luminosité 50%` |
-| 📧 **Mail** | `mail`, `ouvre gmail` |
-| 🔋 **Batterie** | `batterie`, `niveau batterie` |
-| 📋 **Presse-papiers** | `copie bonjour`, `colle` |
-| 📸 **Capture** | `capture`, `capture d'écran` |
-| 🔒 **Sécurité** | `verrouille`, `lock` |
-| ⏻ **Système** | `éteins`, `redémarre` |
-| 🌤️ **Météo** | `météo Paris`, `meteo Lyon` |
+| 🔆 **Brightness** | `monte la luminosité`, `luminosité 50%` |
+| 📧 **Email** | `mail`, `ouvre gmail` |
+| 🔋 **Battery** | `batterie`, `niveau batterie` |
+| 📋 **Clipboard** | `copie bonjour`, `colle` |
+| 📸 **Screenshot** | `capture`, `capture d'écran` |
+| 🔒 **Security** | `verrouille`, `lock` |
+| ⏻ **System** | `éteins`, `redémarre` |
+| 🌤️ **Weather** | `météo Paris`, `meteo Lyon` |
 | 📝 **Notes** | `note que je dois acheter du lait` |
 | 💬 **Questions** | `qui est Macron ?`, `quelle heure est-il ?` |
 
+> 💡 **Note:** Commands are in French, but OpenMind understands various languages and spelling mistakes!
+
 ## 🚀 Installation
 
-### Méthode 1 : Exécutable (recommandée)
-1. Télécharge `OpenMind.exe` depuis la section [Releases](https://github.com/tonpseudo/OpenMind/releases)
-2. Double-clique pour lancer
-3. Obtiens une clé API gratuite sur [console.mistral.ai](https://console.mistral.ai)
-4. Colle la clé quand OpenMind te la demande
-5. Commence à utiliser OpenMind !
+### Method 1: Executable (Recommended)
+1. Download `OpenMind.exe` from the [Releases](https://github.com/sidiki579/OpenMind/releases) section
+2. Double-click to run
+3. Get a free API key from [console.mistral.ai](https://console.mistral.ai)
+4. Paste the key when OpenMind asks for it
+5. Start using OpenMind!
 
-### Méthode 2 : Depuis les sources
+### Method 2: From Source
 ```bash
-git clone https://github.com/tonpseudo/OpenMind.git
+git clone https://github.com/sidiki579/OpenMind.git
 cd OpenMind
 pip install -r requirements.txt
-python openmind.py
+python openmind_final.py
 ```
 
-## 🔑 Obtenir une clé API Mistral (gratuite, sans carte bancaire)
+## 🔑 Getting a Free Mistral AI API Key
 
-1. Va sur **[console.mistral.ai](https://console.mistral.ai)**
-2. Clique sur **"Sign up"** (Inscription)
-3. Utilise ton email ou connecte-toi avec Google
-4. Vérifie ton compte par SMS (un seul numéro par compte)
-5. Dans le menu de gauche, clique sur **"API Keys"**
-6. Clique sur **"Create new key"**
-7. Donne un nom à ta clé (ex: "OpenMind")
-8. **Copie la clé** (elle commence par `sk-...`)
-9. Lance OpenMind et colle la clé dans la fenêtre popup
+1. Go to **[console.mistral.ai](https://console.mistral.ai)**
+2. Click **"Sign up"**
+3. Use your email or Google account
+4. Verify your account via SMS (one number per account)
+5. In the left menu, click **"API Keys"**
+6. Click **"Create new key"**
+7. Give it a name (e.g., "OpenMind")
+8. **Copy the key** (it starts with `sk-...`)
+9. Launch OpenMind and paste the key in the popup window
 
-> ⚠️ **Garde ta clé secrète** ! Ne la partage pas sur GitHub.
+> ⚠️ **Keep your key secret!** Never share it on GitHub.
 
-## 🎯 Exemples de commandes
+## 🎯 Command Examples
 
 ```
 👤 > ouvre whatsapp
-🤖 ✅ WhatsApp ouvert
+🤖 ✅ WhatsApp opened
 
 👤 > ouvre youtube
-🤖 ✅ Site youtube ouvert
+🤖 ✅ Website youtube opened
 
 👤 > cherche recette pizza
-🤖 ✅ Recherche: recette pizza
+🤖 ✅ Search: recette pizza
 
 👤 > calcule 15 * 3
 🤖 🧮 = 45
 
 👤 > monte le volume
-🤖 🔊 Volume monté
+🤖 🔊 Volume up
 
 👤 > photo
-🤖 ✅ Photo sauvegardée: openmind_photo_20250316_143022.jpg
+🤖 ✅ Photo saved: openmind_photo_20250316_143022.jpg
 
 👤 > luminosité 50%
-🤖 🔆 Luminosité à 50%
+🤖 🔆 Brightness set to 50%
 
 👤 > batterie
-🤖 🔋 Batterie: 78% (2h15 restant)
+🤖 🔋 Battery: 78% (2h15 remaining)
 
 👤 > copie bonjour
-🤖 ✅ Copié: bonjour...
+🤖 ✅ Copied: bonjour...
 
 👤 > colle
-🤖 📋 Presse-papiers: bonjour
+🤖 📋 Clipboard: bonjour
 
 👤 > capture
-🤖 ✅ Capture: capture_20250316_143156.png
+🤖 ✅ Screenshot: capture_20250316_143156.png
 
 👤 > verrouille
-🤖 🔒 Ordinateur verrouillé
+🤖 🔒 Computer locked
 
 👤 > météo Paris
-🤖 🌤️ Météo Paris: +12°C ☀️ 15km/h
+🤖 🌤️ Weather Paris: +12°C ☀️ 15km/h
 
 👤 > note que je dois acheter du lait
-🤖 📝 Note sauvegardée
+🤖 📝 Note saved
 
 👤 > qui est Macron ?
-🤖 Emmanuel Macron est le président de la France...
+🤖 Emmanuel Macron is the president of France...
 
 👤 > qui t'a créé ?
-🤖 Mon créateur est Coulibaly Aboubakar Sidiki...
+🤖 My creator is Coulibaly Aboubakar Sidiki...
 
 👤 > aide
-🤖 (affiche toutes les commandes)
+🤖 (displays all commands)
 
 👤 > quit
-🤖 👋 Au revoir !
+🤖 👋 Goodbye!
 ```
 
-## 📦 Dépendances
+## 📦 Dependencies
 
-- Python 3.8 ou supérieur
-- Bibliothèques listées dans `requirements.txt` :
-  - `requests` : appels API
-  - `pyautogui` : contrôle souris/clavier
+- Python 3.8 or higher
+- Libraries listed in `requirements.txt`:
+  - `requests` : API calls
+  - `pyautogui` : mouse/keyboard control
   - `opencv-python` : webcam
-  - `screen-brightness-control` : luminosité
-  - `psutil` : batterie
-  - `pyperclip` : presse-papiers
-  - `mistralai` : IA (optionnel)
-  - `pywin32` : lecteur CD (optionnel)
+  - `screen-brightness-control` : brightness control
+  - `psutil` : battery info
+  - `pyperclip` : clipboard management
+  - `mistralai` : AI integration
+  - `pywin32` : CD drive control (optional)
 
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 OpenMind/
-├── 📄 openmind.py              # Programme principal
-├── 📄 requirements.txt          # Dépendances
-├── 📄 README.md                 # Ce fichier
-├── 📄 LICENSE                   # Licence MIT
-├── 📁 dist/                     # Exécutable
+├── 📄 openmind_final.py         # Main program
+├── 📄 requirements.txt          # Dependencies
+├── 📄 README.md                  # This file
+├── 📄 LICENSE                    # MIT License
+├── 📁 dist/                      # Executable folder
 │   ├── 📄 OpenMind.exe
 │   └── 📄 README.txt
-└── 📁 templates/                 # Images WhatsApp (optionnel)
+└── 📁 templates/                  # WhatsApp images (optional)
     ├── whatsapp_search.png
     ├── whatsapp_text.png
     └── whatsapp_contact.png
 ```
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Créateur
+## 👨‍💻 Creator
 
 **Coulibaly Aboubakar Sidiki**  
-Programmeur amateur passionné
+Passionate amateur programmer from Côte d'Ivoire
 
-- GitHub : [@tonpseudo](https://github.com/tonpseudo)
-- Projet : [OpenMind](https://github.com/tonpseudo/OpenMind)
+- GitHub : [@sidiki579](https://github.com/sidiki579)
+- Project : [OpenMind](https://github.com/sidiki579/OpenMind)
+- Email : coulibalysidiki046@gmail.com
 
-## ⭐ Remerciements
+## ⭐ Acknowledgments
 
-- [Mistral AI](https://mistral.ai) pour leur API gratuite
-- Tous les utilisateurs et contributeurs d'OpenMind !
+- [Mistral AI](https://mistral.ai) for their free API
+- All OpenMind users and contributors!
 
-## 📢 Contribuer
+## 📢 Contributing
 
-Les contributions sont les bienvenues !  
-N'hésite pas à :
-- Signaler des bugs
-- Proposer des améliorations
-- Ajouter des fonctionnalités
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest improvements
+- Add new features
 
 ---
 
-**Fait avec ❤️ en Côte d'Ivoire**
+**Made with ❤️ in Côte d'Ivoire**
