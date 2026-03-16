@@ -1,4 +1,4 @@
-# openmind_final.py - Version ULTIME avec Mistral intelligent
+# openmind_final.py - VERSION FINALE CORRIGÉE
 import subprocess
 import os
 import re
@@ -21,6 +21,7 @@ import pyperclip
 
 # ===== FICHIER DE CONFIGURATION =====
 CONFIG_FILE = "openmind_config.json"
+CACHE_FILE = "openmind_cache.json"
 
 def charger_config():
     """Charge la configuration ou demande la clé API à l'utilisateur"""
@@ -74,6 +75,24 @@ try:
 except Exception as e:
     print(f"⚠️ Erreur de connexion: {e}")
     mistral_disponible = False
+
+# ===== CACHE POUR RÉPONSES RAPIDES =====
+cache_reponses = {}
+if Path(CACHE_FILE).exists():
+    try:
+        with open(CACHE_FILE, 'r') as f:
+            cache_reponses = json.load(f)
+        print(f"✅ Cache chargé ({len(cache_reponses)} entrées)")
+    except:
+        pass
+
+def sauvegarder_cache():
+    """Sauvegarde le cache sur le disque"""
+    try:
+        with open(CACHE_FILE, 'w') as f:
+            json.dump(cache_reponses, f)
+    except:
+        pass
 
 # ===== APPLICATIONS =====
 apps = {
@@ -141,10 +160,10 @@ def calculer(expression):
 
 def controler_volume(commande):
     cmd = commande.lower()
-    if "monte" in cmd:
+    if "monte" in cmd or "augmente" in cmd or "+" in cmd:
         pyautogui.press('volumeup', 3)
         return "🔊 Volume monté"
-    elif "baisse" in cmd:
+    elif "baisse" in cmd or "diminue" in cmd or "-" in cmd:
         pyautogui.press('volumedown', 3)
         return "🔉 Volume baissé"
     elif "mute" in cmd:
@@ -171,18 +190,26 @@ def prendre_photo():
         return f"❌ Erreur webcam: {e}"
 
 def controler_luminosite(commande):
+    """Contrôle la luminosité avec reconnaissance des synonymes"""
     try:
         cmd = commande.lower()
         current = get_brightness()[0]
         
-        if "monte" in cmd or "+" in cmd or "augmente" in cmd:
+        # Mots pour augmenter
+        mots_monter = ["monte", "augmente", "plus", "increase", "up", "+"]
+        # Mots pour baisser
+        mots_baisser = ["baisse", "diminue", "moins", "decrease", "down", "-"]
+        
+        if any(mot in cmd for mot in mots_monter):
             new = min(current + 20, 100)
             set_brightness(new)
             return f"🔆 Luminosité à {new}%"
-        elif "baisse" in cmd or "-" in cmd or "diminue" in cmd:
+        
+        elif any(mot in cmd for mot in mots_baisser):
             new = max(current - 20, 0)
             set_brightness(new)
             return f"🔆 Luminosité à {new}%"
+        
         else:
             match = re.search(r'(\d+)', cmd)
             if match:
@@ -190,7 +217,9 @@ def controler_luminosite(commande):
                 val = max(0, min(val, 100))
                 set_brightness(val)
                 return f"🔆 Luminosité à {val}%"
+            
             return f"🔆 Luminosité actuelle: {current}%"
+            
     except Exception as e:
         return f"❌ Erreur luminosité: {e}"
 
@@ -302,13 +331,20 @@ def ouvrir_lecteur():
     return "ℹ️ Aucun lecteur CD/DVD détecté sur ce PC."
 
 def info_createur():
-    return "🤖 Mon créateur est Coulibaly Aboubakar Sidiki, un programmeur amateur talentueux !"
+    return "🤖 Mon créateur est Coulibaly Aboubakar Sidiki, un programmeur amateur talentueux de Côte d'Ivoire ! J'ai été conçu avec passion et détermination. Mistral AI est l'IA que j'utilise, mais mon véritable créateur, c'est lui !"
 
 # ===== FONCTIONS INTELLIGENTES AVEC MISTRAL =====
 def repondre_question_intelligente(question):
-    """Utilise Mistral pour répondre directement ou ouvrir des sites"""
+    """Utilise Mistral avec cache pour répondre rapidement"""
     if not mistral_disponible:
         return None
+    
+    question_clean = question.lower().strip()
+    
+    # Vérification du cache
+    if question_clean in cache_reponses:
+        print("⚡ Réponse du cache")
+        return f"🤖 {cache_reponses[question_clean]}"
     
     try:
         prompt = f"""
@@ -318,32 +354,38 @@ def repondre_question_intelligente(question):
         
         Réponds UNIQUEMENT au format JSON avec :
         
-        1. Si c'est une QUESTION (qui, quand, pourquoi, comment, etc.) :
-           {{"type": "question", "reponse": "ta réponse"}}
-           
-        2. Si c'est une DEMANDE D'OUVRIR UN SITE (même si le nom est mal écrit) :
-           {{"type": "site", "nom": "nom du site", "url": "url complète"}}
-           Exemple: "ouvre facebook" → {{"type": "site", "nom": "facebook", "url": "https://facebook.com"}}
-           Exemple: "va sur youtube" → {{"type": "site", "nom": "youtube", "url": "https://youtube.com"}}
-           Exemple: "instagram" → {{"type": "site", "nom": "instagram", "url": "https://instagram.com"}}
-           Exemple: "tik tok" → {{"type": "site", "nom": "tiktok", "url": "https://tiktok.com"}}
-           Exemple: "discord" → {{"type": "site", "nom": "discord", "url": "https://discord.com"}}
-           Exemple: "whatsapp web" → {{"type": "site", "nom": "whatsapp", "url": "https://web.whatsapp.com"}}
-           
-        3. Si c'est une autre action (volume, photo, etc.) :
-           {{"type": "action", "commande": "..."}}
+        1. QUESTION: {{"type": "question", "reponse": "ta réponse"}}
+           Exemples: "qui est Macron", "quelle heure est-il"
+        
+        2. SITE: {{"type": "site", "nom": "nom", "url": "https://..."}}
+           Exemples: "ouvre facebook", "instagram", "tik tok", "whatsapp web"
+        
+        3. LUMINOSITÉ: {{"type": "luminosite", "commande": "monter|baisser|50"}}
+           Exemples: 
+           - "monte la luminosité" → {{"type": "luminosite", "commande": "monter"}}
+           - "augmente la lumière" → {{"type": "luminosite", "commande": "monter"}}
+           - "baisse l'éclairage" → {{"type": "luminosite", "commande": "baisser"}}
+           - "diminue la luminosité" → {{"type": "luminosite", "commande": "baisser"}}
+           - "luminosité 70%" → {{"type": "luminosite", "commande": "70"}}
+           - "éclairage 30%" → {{"type": "luminosite", "commande": "30"}}
+        
+        4. VOLUME: {{"type": "volume", "commande": "monter|baisser|mute|50"}}
+           Exemples: "monte le volume", "baisse le son", "volume 50%"
+        
+        5. AUTRE: {{"type": "action"}}
         """
         
         response = requests.post(
             "https://api.mistral.ai/v1/chat/completions",
             headers={"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"},
             json={
-                "model": "mistral-small-latest",
+                "model": "mistral-tiny",  # Plus rapide
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": 0.1,
-                "max_tokens": 300
+                "max_tokens": 150,
+                "timeout": 5
             },
-            timeout=10
+            timeout=5
         )
         
         if response.status_code == 200:
@@ -353,11 +395,12 @@ def repondre_question_intelligente(question):
             if match:
                 decision = json.loads(match.group())
                 
-                # Si c'est une question, on répond directement
                 if decision["type"] == "question":
-                    return f"🤖 {decision['reponse']}"
+                    reponse = decision['reponse']
+                    cache_reponses[question_clean] = reponse
+                    sauvegarder_cache()
+                    return f"🤖 {reponse}"
                 
-                # Si c'est un site, on l'ouvre
                 elif decision["type"] == "site":
                     url = decision.get("url", f"https://{decision['nom']}.com")
                     try:
@@ -366,9 +409,11 @@ def repondre_question_intelligente(question):
                     except:
                         return f"❌ Impossible d'ouvrir {decision['nom']}"
                 
-                # Si c'est une action, on redirige vers l'analyseur classique
-                elif decision["type"] == "action":
-                    return None
+                elif decision["type"] == "luminosite":
+                    return controler_luminosite(decision["commande"])
+                
+                elif decision["type"] == "volume":
+                    return controler_volume(decision["commande"])
     except:
         pass
     
@@ -383,7 +428,7 @@ def ouvrir_site_avec_mistral(nom_site):
             "https://api.mistral.ai/v1/chat/completions",
             headers={"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"},
             json={
-                "model": "mistral-small-latest",
+                "model": "mistral-tiny",
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": 0.1,
                 "max_tokens": 50
@@ -411,14 +456,11 @@ def analyser_classique(texte):
     
     if t.startswith("ouvre "):
         nom = t[6:].strip()
-        # D'abord on cherche dans les sites
         if nom in sites:
             return {"action": "ouvrir_site", "nom": nom}
-        # Ensuite dans les applis
         elif nom in apps:
             return {"action": "ouvrir_app", "nom": nom}
         else:
-            # Sinon, on demande à Mistral
             reponse = ouvrir_site_avec_mistral(nom)
             if reponse:
                 print(f"🤖 {reponse}")
@@ -441,8 +483,15 @@ def analyser_classique(texte):
     
     if any(m in t for m in ["volume", "son", "mute"]): return {"action": "volume", "commande": t}
     
+    # Luminosité avec TOUS les synonymes
+    luminosite_mots = [
+        "luminosité", "luminosite", "lumiere", "lumière", 
+        "éclairage", "eclairage", "brightness", "light", "lum"
+    ]
+    if any(mot in t for mot in luminosite_mots):
+        return {"action": "luminosite", "commande": t}
+    
     if "photo" in t or "webcam" in t: return {"action": "photo"}
-    if "luminosité" in t or "lumiere" in t: return {"action": "luminosite", "commande": t}
     
     if "mail" in t or "gmail" in t or "outlook" in t:
         service = "gmail"
@@ -467,30 +516,47 @@ def analyser_classique(texte):
         texte = t.split("note que")[1].strip()
         return {"action": "note", "texte": texte}
     
-    if "créateur" in t or "createur" in t or "qui t'a créé" in t:
-        return {"action": "créateur"}
-    
     if "lecteur" in t or "cd" in t or "dvd" in t or "éjecte" in t:
         return {"action": "lecteur"}
     
-    # Si rien d'autre, on considère que c'est une question pour Mistral
     return {"action": "question", "texte": t}
 
 # ===== ANALYSEUR PRINCIPAL =====
 def analyser(commande):
-    # D'abord on essaie avec Mistral intelligent
+    # Vérification PRIORITAIRE du créateur (avant même Mistral)
+    commande_clean = commande.lower().strip()
+    
+    # Liste COMPLÈTE de toutes les façons de demander le créateur
+    mots_createur = [
+        "créateur", "createur", "qui t'a créé", "qui t'a fait", 
+        "ton créateur", "ton createur", "qui t as créé", "qui t as fait",
+        "qui est ton créateur", "qui est ton createur", "qui t a créé",
+        "ton créateur c'est qui", "ton createur c'est qui", "qui t as fait",
+        "qui t a fait", "qui t as créé", "qui t a créé", "qui ta cree",
+        "qui ta fait", "qui tas cree", "qui tas fait", "ton createur c qui",
+        "c qui ton createur", "c'est qui ton créateur", "le createur de openmind",
+        "le créateur de openmind", "qui a créé openmind", "qui a cree openmind",
+        "qui est le créateur", "qui est le createur", "qui t as developpe",
+        "qui t'a developpe", "ton developpeur", "ton développeur",
+        "qui t'as créé", "qui t'as fait", "qui t'as developpe", "qui t'as développé",
+        "qui ta créé", "qui ta fait", "qui ta developer", "qui ta développé"
+    ]
+    
+    # ✅ SI LA COMMANDE PARLE DU CRÉATEUR, ON RÉPOND DIRECTEMENT SANS PASSER PAR MISTRAL
+    if any(mot in commande_clean for mot in mots_createur):
+        return {"action": "createur"}
+    
+    # Ensuite on essaie avec Mistral intelligent
     reponse = repondre_question_intelligente(commande)
     if reponse:
-        print(f"🤖 {reponse}")
-        return {"action": "ignore"}
+        return {"action": "reponse", "message": reponse}
     
-    # Sinon, on utilise l'analyseur classique
     return analyser_classique(commande)
 
 # ===== PROGRAMME PRINCIPAL =====
 def main():
     print("=" * 60)
-    print("🧠 OPENMIND - Version ULTIME avec Mistral intelligent")
+    print("🧠 OPENMIND - VERSION FINALE CORRIGÉE")
     print("=" * 60)
     print("\n📋 Commandes possibles:")
     print("  • [question]         → Réponse directe de Mistral")
@@ -499,8 +565,8 @@ def main():
     print("  • cherche [sujet]    → recherche Google")
     print("  • calcule [expr]     → calcul")
     print("  • [volume]           → monte/baisse/mute")
+    print("  • [luminosité]       → monte/baisse (avec synonymes)")
     print("  • photo              → prend une photo")
-    print("  • luminosité         → contrôle luminosité")
     print("  • mail               → ouvre boîte mail")
     print("  • batterie           → niveau batterie")
     print("  • copie [texte]      → copie texte")
@@ -511,6 +577,7 @@ def main():
     print("  • redémarre          → redémarre PC")
     print("  • météo [ville]      → météo")
     print("  • note que [texte]   → note")
+    print("  • [créateur]         → qui a créé OpenMind")
     print("  • aide               → cette aide")
     print("  • quit               → quitter")
     print("-" * 60)
@@ -527,8 +594,10 @@ def main():
             elif d["action"] == "quit":
                 print("👋 Au revoir !")
                 break
-            elif d["action"] == "ignore":
-                continue  # Déjà traité par Mistral
+            elif d["action"] == "createur":
+                print(f"🤖 {info_createur()}")
+            elif d["action"] == "reponse":
+                print(f"🤖 {d['message']}")
             elif d["action"] == "ouvrir_app": print(f"🤖 {ouvrir_application(d['nom'])}")
             elif d["action"] == "ouvrir_site": print(f"🤖 {ouvrir_site(d['nom'])}")
             elif d["action"] == "rechercher": print(f"🤖 {rechercher_google(d['requete'])}")
@@ -547,9 +616,7 @@ def main():
             elif d["action"] == "meteo": print(f"🤖 {meteo(d.get('ville', 'Paris'))}")
             elif d["action"] == "note": print(f"🤖 {noter(d['texte'])}")
             elif d["action"] == "lecteur": print(f"🤖 {ouvrir_lecteur()}")
-            elif d["action"] == "créateur": print(f"🤖 {info_createur()}")
             elif d["action"] == "question": 
-                # Si on arrive ici, c'est que Mistral n'a pas répondu
                 print("🤖 ❌ Je n'ai pas compris")
             else:
                 print("🤖 ❌ Commande non reconnue")
