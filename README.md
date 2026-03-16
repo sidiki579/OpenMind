@@ -6,22 +6,40 @@ OpenMind is an intelligent assistant that controls your Windows computer through
 
 | Category | Commands |
 |----------|----------|
-| 📱 **Applications** | `ouvre whatsapp`, `ouvre telegram`, `ouvre chrome`, `ouvre calculatrice`... |
-| 🌐 **Websites** | `ouvre youtube`, `ouvre google`, `ouvre spotify`, `ouvre facebook`... |
-| 🔍 **Search** | `cherche recette pizza`, `recherche météo Paris` |
-| 🧮 **Calculations** | `calcule 15 * 3`, `calcule 25 + 10` |
-| 🔊 **Volume** | `monte le volume`, `baisse le son`, `mute` |
-| 📷 **Webcam** | `photo`, `prends une photo` |
-| 🔆 **Brightness** | `monte la luminosité`, `luminosité 50%` |
-| 📧 **Email** | `mail`, `ouvre gmail` |
-| 🔋 **Battery** | `batterie`, `niveau batterie` |
-| 📋 **Clipboard** | `copie bonjour`, `colle` |
-| 📸 **Screenshot** | `capture`, `capture d'écran` |
-| 🔒 **Security** | `verrouille`, `lock` |
-| ⏻ **System** | `éteins`, `redémarre` |
-| 🌤️ **Weather** | `météo Paris`, `meteo Lyon` |
-| 📝 **Notes** | `note que je dois acheter du lait` |
-| 💬 **Questions** | `qui est Macron ?`, `quelle heure est-il ?` |
+| 📱 **Applications** | `ouvre whatsapp`, `ouvre telegram`, `ouvre chrome`, `ouvre calculatrice`... | Open any installed application |
+| 🌐 **Websites** | `ouvre youtube`, `ouvre google`, `ouvre spotify`, `ouvre facebook`... | Open any website directly |
+| 🔍 **Search** | `cherche recette pizza`, `recherche météo Paris` | Search Google instantly |
+| 🧮 **Calculations** | `calcule 15 * 3`, `calcule 25 + 10` | Perform mathematical calculations |
+| 🔊 **Volume** | `monte le volume`, `baisse le son`, `mute` | Control system volume |
+| 📷 **Webcam** | `photo`, `prends une photo` | Take a photo with your webcam |
+| 🔆 **Brightness** | `monte la luminosité`, `luminosité 50%` | Adjust screen brightness |
+| 📧 **Email** | `mail`, `ouvre gmail` | Open your email inbox |
+| 🔋 **Battery** | `batterie`, `niveau batterie` | Check battery level and status |
+| 📋 **Clipboard** | `copie bonjour`, `colle` | Copy and paste text |
+| 📸 **Screenshot** | `capture`, `capture d'écran` | Take a screenshot |
+| 🔒 **Security** | `verrouille`, `lock` | Lock your computer |
+| ⏻ **System** | `éteins`, `redémarre` | Shutdown or restart your PC |
+| 🌤️ **Weather** | `météo Paris`, `meteo Lyon` | Get weather information |
+| 📝 **Notes** | `note que je dois acheter du lait` | Save quick notes |
+| 💬 **Questions** | `qui est Macron ?`, `quelle heure est-il ?` | Ask any question to Mistral AI |
+📌 À PLACER DANS TON README.md
+Tu peux remplacer l'ancien tableau des fonctionnalités par celui-ci, ou l'ajouter à côté.
+
+💡 EXPLICATIONS POUR LES ANGLOPHONES
+Si tu veux ajouter une petite note d'explication en dessous :
+
+markdown
+> 💡 **Note:** Commands are in French, but OpenMind understands natural language, synonyms, and even spelling mistakes!  
+> For example, `ouvre youtube` (open youtube), `cherche pizza` (search pizza), `monte le volume` (volume up), etc.
+🎯 CE QUE ÇA APPORTE
+Avant	Après
+Tableau simple	✅ Tableau avec descriptions détaillées
+Commandes en français	✅ Explications en anglais
+Pas de contexte	✅ Les anglophones comprennent chaque fonction
+Veux-tu que je te donne le README.md complet avec cette nouvelle section intégrée ? 🚀
+
+
+
 
 > 💡 **Note:** Commands are in French, but OpenMind understands various languages and spelling mistakes!
 
