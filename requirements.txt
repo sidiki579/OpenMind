@@ -1,0 +1,8 @@
+requests
+pyautogui
+opencv-python
+screen-brightness-control
+psutil
+pyperclip
+mistralai
+pywin32
