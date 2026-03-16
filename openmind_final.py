@@ -1,4 +1,4 @@
-# openmind_final.py - Version ULTIME avec lecteur CD physique
+# openmind_final.py - Version ULTIME avec Mistral intelligent
 import subprocess
 import os
 import re
@@ -103,51 +103,10 @@ sites = {
     "github": "github.com",
     "gmail": "gmail.com",
     "discord": "discord.com",
+    "whatsapp": "web.whatsapp.com",
 }
 
 # ===== FONCTIONS DE BASE =====
-def repondre_question(question):
-    """Utilise l'API Mistral pour répondre aux questions"""
-    if not mistral_disponible:
-        return "❌ IA non disponible. Vérifie ta clé API."
-    
-    try:
-        headers = {
-            "Authorization": f"Bearer {MISTRAL_API_KEY}",
-            "Content-Type": "application/json"
-        }
-        
-        data = {
-            "model": "mistral-small-latest",
-            "messages": [{"role": "user", "content": question}],
-            "temperature": 0.7,
-            "max_tokens": 500
-        }
-        
-        response = requests.post(
-            "https://api.mistral.ai/v1/chat/completions",
-            headers=headers,
-            json=data,
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            resultat = response.json()
-            return f"🤖 {resultat['choices'][0]['message']['content']}"
-        elif response.status_code == 429:
-            return "❌ Limite de requêtes atteinte. Attends un peu."
-        elif response.status_code == 401:
-            return "❌ Clé API invalide. Vérifie ta clé."
-        else:
-            return f"❌ Erreur {response.status_code}: {response.text[:100]}"
-            
-    except requests.exceptions.Timeout:
-        return "❌ Délai d'attente dépassé. Vérifie ta connexion."
-    except requests.exceptions.ConnectionError:
-        return "❌ Erreur de connexion. Vérifie internet."
-    except Exception as e:
-        return f"❌ Erreur: {str(e)[:100]}"
-
 def ouvrir_application(nom):
     if nom in apps:
         try:
@@ -339,116 +298,109 @@ def noter(texte):
         f.write(f"{time.strftime('%Y-%m-%d %H:%M')} - {texte}\n")
     return "📝 Note sauvegardée"
 
-# ===== LECTEUR CD PHYSIQUE AVEC DEBUG =====
 def ouvrir_lecteur():
-    """Ouvre le lecteur CD/DVD physique avec messages de debug"""
-    try:
-        import win32file
-        import win32con
-        
-        print("\n🔍 RECHERCHE DE LECTEURS PHYSIQUES...")
-        print("-" * 40)
-        
-        lecteurs_cd = []
-        
-        # Vérifie tous les lecteurs de D à Z
-        for lettre in range(ord('D'), ord('Z') + 1):
-            drive = f"{chr(lettre)}:"
-            if os.path.exists(drive):
-                try:
-                    drive_type = win32file.GetDriveType(drive)
-                    # Types de lecteurs Windows
-                    types = {
-                        0: "Inconnu",
-                        1: "Pas de racine",
-                        2: "AMOVIBLE (USB, SD)",
-                        3: "FIXE (Disque dur)",
-                        4: "RÉSEAU",
-                        5: "CD-ROM/DVD (PHYSIQUE)",  # ← C'est ce qu'on cherche !
-                        6: "RAM"
-                    }
-                    type_nom = types.get(drive_type, f"Type {drive_type}")
-                    print(f"   {drive}: {type_nom}")
-                    
-                    if drive_type == 5:  # DRIVE_CDROM
-                        lecteurs_cd.append(drive)
-                        
-                except Exception as e:
-                    print(f"   {drive}: Erreur lecture - {e}")
-            else:
-                print(f"   {drive}: (inexistant)")
-        
-        print("-" * 40)
-        
-        if not lecteurs_cd:
-            return "❌ AUCUN lecteur CD/DVD physique détecté sur ce PC.\n   Vérifie que ton PC a bien un lecteur et que les pilotes sont installés."
-        
-        print(f"\n🔧 {len(lecteurs_cd)} lecteur(s) CD trouvé(s). Tentative d'ouverture...")
-        
-        # Essaie d'ouvrir chaque lecteur trouvé
-        for lecteur in lecteurs_cd:
-            print(f"\n🔧 Tentative d'ouverture de {lecteur}...")
-            try:
-                handle = win32file.CreateFile(
-                    f"\\\\.\\{lecteur}",
-                    win32file.GENERIC_READ | win32file.GENERIC_WRITE,
-                    win32file.FILE_SHARE_READ | win32file.FILE_SHARE_WRITE,
-                    None,
-                    win32file.OPEN_EXISTING,
-                    0,
-                    None
-                )
-                
-                print(f"   ✅ Handle obtenu, envoi de la commande d'éjection...")
-                win32file.DeviceIoControl(handle, win32file.IOCTL_STORAGE_EJECT_MEDIA, None, None)
-                handle.close()
-                return f"\n💿 Lecteur {lecteur} ouvert avec succès ! Le tiroir devrait sortir."
-                
-            except Exception as e:
-                print(f"   ⚠️ Échec: {e}")
-                continue
-        
-        return "\n❌ Impossible d'ouvrir le lecteur. Causes possibles:\n   • Lecteur déjà ouvert\n   • Pas de CD inséré (certains lecteurs ne s'ouvrent pas sans CD)\n   • Problème matériel ou de pilotes"
-        
-    except ImportError:
-        return "❌ Bibliothèque manquante: pip install pywin32"
-    except Exception as e:
-        return f"❌ Erreur: {e}"
-
-# ===== DIAGNOSTIC COMPLET DES LECTEURS =====
-def diagnostic_lecteurs():
-    """Affiche tous les lecteurs pour debug"""
-    try:
-        import win32file
-        resultats = ["\n📋 DIAGNOSTIC COMPLET DES LECTEURS:"]
-        
-        for lettre in range(ord('A'), ord('Z') + 1):
-            drive = f"{chr(lettre)}:"
-            if os.path.exists(drive):
-                try:
-                    drive_type = win32file.GetDriveType(drive)
-                    types = {
-                        0: "Inconnu",
-                        1: "Pas de racine",
-                        2: "AMOVIBLE (USB)",
-                        3: "FIXE (Disque dur)",
-                        4: "RÉSEAU",
-                        5: "CD-ROM (PHYSIQUE)",
-                        6: "RAM"
-                    }
-                    type_nom = types.get(drive_type, f"Type {drive_type}")
-                    resultats.append(f"   {drive} : {type_nom}")
-                except:
-                    resultats.append(f"   {drive} : Erreur lecture")
-            else:
-                resultats.append(f"   {drive} : (inexistant)")
-        
-        return "\n".join(resultats)
-    except Exception as e:
-        return f"❌ Erreur diagnostic: {e}"
+    return "ℹ️ Aucun lecteur CD/DVD détecté sur ce PC."
 
 def info_createur():
     return "🤖 Mon créateur est Coulibaly Aboubakar Sidiki, un programmeur amateur talentueux !"
+
+# ===== FONCTIONS INTELLIGENTES AVEC MISTRAL =====
+def repondre_question_intelligente(question):
+    """Utilise Mistral pour répondre directement ou ouvrir des sites"""
+    if not mistral_disponible:
+        return None
+    
+    try:
+        prompt = f"""
+        Tu es OpenMind, un assistant intelligent.
+        
+        Analyse cette demande: "{question}"
+        
+        Réponds UNIQUEMENT au format JSON avec :
+        
+        1. Si c'est une QUESTION (qui, quand, pourquoi, comment, etc.) :
+           {{"type": "question", "reponse": "ta réponse"}}
+           
+        2. Si c'est une DEMANDE D'OUVRIR UN SITE (même si le nom est mal écrit) :
+           {{"type": "site", "nom": "nom du site", "url": "url complète"}}
+           Exemple: "ouvre facebook" → {{"type": "site", "nom": "facebook", "url": "https://facebook.com"}}
+           Exemple: "va sur youtube" → {{"type": "site", "nom": "youtube", "url": "https://youtube.com"}}
+           Exemple: "instagram" → {{"type": "site", "nom": "instagram", "url": "https://instagram.com"}}
+           Exemple: "tik tok" → {{"type": "site", "nom": "tiktok", "url": "https://tiktok.com"}}
+           Exemple: "discord" → {{"type": "site", "nom": "discord", "url": "https://discord.com"}}
+           Exemple: "whatsapp web" → {{"type": "site", "nom": "whatsapp", "url": "https://web.whatsapp.com"}}
+           
+        3. Si c'est une autre action (volume, photo, etc.) :
+           {{"type": "action", "commande": "..."}}
+        """
+        
+        response = requests.post(
+            "https://api.mistral.ai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"},
+            json={
+                "model": "mistral-small-latest",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.1,
+                "max_tokens": 300
+            },
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            resultat = response.json()
+            texte_json = resultat['choices'][0]['message']['content']
+            match = re.search(r'\{.*\}', texte_json, re.DOTALL)
+            if match:
+                decision = json.loads(match.group())
+                
+                # Si c'est une question, on répond directement
+                if decision["type"] == "question":
+                    return f"🤖 {decision['reponse']}"
+                
+                # Si c'est un site, on l'ouvre
+                elif decision["type"] == "site":
+                    url = decision.get("url", f"https://{decision['nom']}.com")
+                    try:
+                        subprocess.Popen(["C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", url])
+                        return f"✅ Site {decision['nom']} ouvert"
+                    except:
+                        return f"❌ Impossible d'ouvrir {decision['nom']}"
+                
+                # Si c'est une action, on redirige vers l'analyseur classique
+                elif decision["type"] == "action":
+                    return None
+    except:
+        pass
+    
+    return None
+
+def ouvrir_site_avec_mistral(nom_site):
+    """Utilise Mistral pour trouver l'URL d'un site même s'il n'est pas dans la liste"""
+    try:
+        prompt = f"Donne-moi l'URL complète de {nom_site}. Réponds UNIQUEMENT avec l'URL, rien d'autre."
+        
+        response = requests.post(
+            "https://api.mistral.ai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"},
+            json={
+                "model": "mistral-small-latest",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.1,
+                "max_tokens": 50
+            },
+            timeout=5
+        )
+        
+        if response.status_code == 200:
+            resultat = response.json()
+            url = resultat['choices'][0]['message']['content'].strip()
+            if url.startswith("http"):
+                subprocess.Popen(["C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", url])
+                return f"✅ Site {nom_site} ouvert via Mistral"
+    except:
+        pass
+    
+    return None
 
 # ===== ANALYSEUR CLASSIQUE =====
 def analyser_classique(texte):
@@ -457,8 +409,33 @@ def analyser_classique(texte):
     if t in ["aide", "help"]: return {"action": "aide"}
     if t in ["quit", "exit"]: return {"action": "quit"}
     
-    if t.startswith("ouvre "): return {"action": "ouvrir_app", "nom": t[6:]}
-    if t.startswith("site "): return {"action": "ouvrir_site", "nom": t[5:]}
+    if t.startswith("ouvre "):
+        nom = t[6:].strip()
+        # D'abord on cherche dans les sites
+        if nom in sites:
+            return {"action": "ouvrir_site", "nom": nom}
+        # Ensuite dans les applis
+        elif nom in apps:
+            return {"action": "ouvrir_app", "nom": nom}
+        else:
+            # Sinon, on demande à Mistral
+            reponse = ouvrir_site_avec_mistral(nom)
+            if reponse:
+                print(f"🤖 {reponse}")
+                return {"action": "ignore"}
+            return {"action": "ouvrir_app", "nom": nom}
+    
+    if t.startswith("site "):
+        nom = t[5:].strip()
+        if nom in sites:
+            return {"action": "ouvrir_site", "nom": nom}
+        else:
+            reponse = ouvrir_site_avec_mistral(nom)
+            if reponse:
+                print(f"🤖 {reponse}")
+                return {"action": "ignore"}
+            return {"action": "ouvrir_site", "nom": nom}
+    
     if t.startswith("cherche "): return {"action": "rechercher", "requete": t[8:]}
     if t.startswith("calcule "): return {"action": "calculer", "expression": t[8:]}
     
@@ -496,74 +473,29 @@ def analyser_classique(texte):
     if "lecteur" in t or "cd" in t or "dvd" in t or "éjecte" in t:
         return {"action": "lecteur"}
     
-    if "diagnostic" in t and "lecteur" in t:
-        return {"action": "diagnostic_lecteur"}
-    
+    # Si rien d'autre, on considère que c'est une question pour Mistral
     return {"action": "question", "texte": t}
 
-# ===== ANALYSEUR INTELLIGENT AVEC IA =====
-def analyser_avec_ia(commande):
-    if not mistral_disponible:
-        return analyser_classique(commande)
+# ===== ANALYSEUR PRINCIPAL =====
+def analyser(commande):
+    # D'abord on essaie avec Mistral intelligent
+    reponse = repondre_question_intelligente(commande)
+    if reponse:
+        print(f"🤖 {reponse}")
+        return {"action": "ignore"}
     
-    prompt = f"""
-    Tu es OpenMind, assistant contrôlant un ordinateur.
-    Commande: "{commande}"
-    
-    Réponds UNIQUEMENT avec JSON:
-    - ouvrir_app: {{"action": "ouvrir_app", "nom": "app"}}
-    - ouvrir_site: {{"action": "ouvrir_site", "nom": "site"}}
-    - rechercher: {{"action": "rechercher", "requete": "texte"}}
-    - calculer: {{"action": "calculer", "expression": "15*3"}}
-    - volume: {{"action": "volume", "commande": "monter|baisser|mute|50"}}
-    - photo: {{"action": "photo"}}
-    - luminosite: {{"action": "luminosite", "commande": "monter|baisser|50"}}
-    - batterie: {{"action": "batterie"}}
-    - copier: {{"action": "copier", "texte": "texte"}}
-    - coller: {{"action": "coller"}}
-    - capture: {{"action": "capture"}}
-    - verrouiller: {{"action": "verrouiller"}}
-    - eteindre: {{"action": "eteindre"}}
-    - redemarrer: {{"action": "redemarrer"}}
-    - meteo: {{"action": "meteo", "ville": "Paris"}}
-    - note: {{"action": "note", "texte": "texte"}}
-    - lecteur: {{"action": "lecteur"}}
-    - diagnostic_lecteur: {{"action": "diagnostic_lecteur"}}
-    - créateur: {{"action": "créateur"}}
-    - question: {{"action": "question", "texte": "texte"}}
-    """
-    
-    try:
-        response = requests.post(
-            "https://api.mistral.ai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"},
-            json={
-                "model": "mistral-small-latest",
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.1,
-                "max_tokens": 200
-            },
-            timeout=10
-        )
-        
-        if response.status_code == 200:
-            resultat = response.json()
-            texte_json = resultat['choices'][0]['message']['content']
-            match = re.search(r'\{.*\}', texte_json, re.DOTALL)
-            if match:
-                return json.loads(match.group())
-    except:
-        pass
-    
+    # Sinon, on utilise l'analyseur classique
     return analyser_classique(commande)
 
 # ===== PROGRAMME PRINCIPAL =====
 def main():
     print("=" * 60)
-    print("🧠 OPENMIND - Version ULTIME avec lecteur CD physique")
+    print("🧠 OPENMIND - Version ULTIME avec Mistral intelligent")
     print("=" * 60)
-    print("\n📋 Commandes disponibles:")
-    print("  • ouvre [app/site]   → ouvre application ou site")
+    print("\n📋 Commandes possibles:")
+    print("  • [question]         → Réponse directe de Mistral")
+    print("  • ouvre [site/app]   → ouvre site ou application")
+    print("  • site [nom]         → ouvre un site")
     print("  • cherche [sujet]    → recherche Google")
     print("  • calcule [expr]     → calcul")
     print("  • [volume]           → monte/baisse/mute")
@@ -579,9 +511,6 @@ def main():
     print("  • redémarre          → redémarre PC")
     print("  • météo [ville]      → météo")
     print("  • note que [texte]   → note")
-    print("  • lecteur cd         → ouvre le lecteur CD/DVD physique")
-    print("  • diagnostic lecteur → affiche tous les lecteurs")
-    print("  • [question]         → question à Mistral")
     print("  • aide               → cette aide")
     print("  • quit               → quitter")
     print("-" * 60)
@@ -591,13 +520,15 @@ def main():
             cmd = input("\n👤 > ").strip()
             if not cmd: continue
             
-            d = analyser_avec_ia(cmd)
+            d = analyser(cmd)
             
             if d["action"] == "aide":
                 print("\n📋 Commandes listées ci-dessus")
             elif d["action"] == "quit":
                 print("👋 Au revoir !")
                 break
+            elif d["action"] == "ignore":
+                continue  # Déjà traité par Mistral
             elif d["action"] == "ouvrir_app": print(f"🤖 {ouvrir_application(d['nom'])}")
             elif d["action"] == "ouvrir_site": print(f"🤖 {ouvrir_site(d['nom'])}")
             elif d["action"] == "rechercher": print(f"🤖 {rechercher_google(d['requete'])}")
@@ -616,10 +547,12 @@ def main():
             elif d["action"] == "meteo": print(f"🤖 {meteo(d.get('ville', 'Paris'))}")
             elif d["action"] == "note": print(f"🤖 {noter(d['texte'])}")
             elif d["action"] == "lecteur": print(f"🤖 {ouvrir_lecteur()}")
-            elif d["action"] == "diagnostic_lecteur": print(f"🤖 {diagnostic_lecteurs()}")
             elif d["action"] == "créateur": print(f"🤖 {info_createur()}")
-            elif d["action"] == "question": print(f"🤖 {repondre_question(cmd)}")
-            else: print("🤖 ❌ Commande non reconnue")
+            elif d["action"] == "question": 
+                # Si on arrive ici, c'est que Mistral n'a pas répondu
+                print("🤖 ❌ Je n'ai pas compris")
+            else:
+                print("🤖 ❌ Commande non reconnue")
                 
         except KeyboardInterrupt:
             print("\n👋 Au revoir !")
